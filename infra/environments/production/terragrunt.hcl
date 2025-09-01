@@ -9,15 +9,20 @@ terraform {
   source = "../../modules/gke"
 }
 
-# Environment-specific inputs
+# Environment-specific inputs - FREE TIER OPTIMIZED
 inputs = {
-  environment    = "production"
-  cluster_name   = "gke-production"
-  region         = "us-east1"       # Different region for production
-  node_type      = "e2-standard-4"  # Larger nodes for production
-  node_count     = 3                # More nodes for high availability
-  min_node_count = 2                # Higher minimum for production
-  max_node_count = 15               # Higher maximum for scaling
+  environment       = "production"
+  cluster_name      = "gke-production"
+  region            = "us-east1-b"          # Free tier eligible region
+  
+  # FREE TIER SETTINGS (slightly higher than staging)
+  enable_autopilot   = false               # Standard mode for more control
+  enable_preemptible = true                # Use preemptible for cost savings
+  node_type          = "e2-small"          # Slightly larger but still free tier
+  node_count         = 1                   # Start minimal
+  min_node_count     = 1                   # Minimum for cost
+  max_node_count     = 3                   # Limited scaling for free tier
+  disk_size_gb       = 32                  # Reduced disk size
   
   # Network configuration
   subnet_cidr   = "10.20.0.0/16"
