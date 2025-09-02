@@ -1,0 +1,24 @@
+# GitHub Environment Configuration for Production Approval
+# This file is for documentation - actual environment setup is done in GitHub UI
+
+name: production-approval
+description: Manual approval gate for production deployments
+
+# Environment protection rules (configure in GitHub UI):
+# - Required reviewers: 
+#   - @senior-engineer-1
+#   - @senior-engineer-2
+#   - @platform-lead
+# - Restrict to tags starting with 'v' only
+# - Wait timer: 0 minutes
+# - Allow administrators to bypass protection rules: false
+
+# This environment is used solely for manual approval before production deployment
+# No actual deployment happens in this environment
+
+# Required reviewers should verify:
+# - Staging deployment successful
+# - All tests passing
+# - Security scans clear
+# - Change has been properly reviewed
+# - Release notes are complete

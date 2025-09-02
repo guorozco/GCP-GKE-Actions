@@ -292,4 +292,11 @@ docs/build/
 # If you accidentally commit sensitive data, use tools like:
 # - git filter-branch
 # - BFG Repo-Cleaner
-# - GitHub's built-in secret scanning
+# - GitHub's built-in secret scanning*.json
+*-key.json
+*service-account*.json
+credentials/
+*.json
+*-key.json
+*service-account*.json
+credentials/

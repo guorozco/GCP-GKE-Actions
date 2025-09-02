@@ -1,0 +1,18 @@
+# GitHub Environment Configuration for Staging
+# This file is for documentation - actual environment setup is done in GitHub UI
+
+name: staging
+description: Staging environment for testing deployments
+
+# Environment settings (configure in GitHub UI):
+# - No protection rules needed for staging
+# - Allow any branch to deploy
+# - No required reviewers
+
+# Environment variables:
+# - ENVIRONMENT: staging
+# - CLUSTER_NAME: gke-staging
+# - REGION: us-central1
+
+# Secrets required:
+# - GCP_SA_KEY: Service account key for GCP authentication

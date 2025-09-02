@@ -1,0 +1,146 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [main, develop]
+    
+env:
+  PROJECT_ID: test-demo-123456-guillermo
+  STAGING_REGISTRY: us-central1-docker.pkg.dev/test-demo-123456-guillermo/staging-docker
+  IMAGE_NAME: hello-world-flask
+
+jobs:
+  # Lint and validate
+  lint:
+    name: Lint & Validate
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install Python dependencies
+        run: |
+          cd app
+          pip install -r requirements.txt
+          pip install flake8 black
+          
+      - name: Python linting
+        run: |
+          cd app
+          flake8 app.py --max-line-length=88 --ignore=E203,W503
+          black --check app.py
+          
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: '3.12.0'
+          
+      - name: Helm lint
+        run: |
+          helm lint ./charts/hello-app
+          helm lint ./charts/hello-app --values ./charts/hello-app/values-staging.yaml
+          helm lint ./charts/hello-app --values ./charts/hello-app/values-production.yaml
+          
+      - name: Terraform format check
+        run: |
+          cd infra
+          terraform fmt -check -recursive .
+
+  # Build test
+  build-test:
+    name: Build Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Build Docker image
+        run: |
+          cd app
+          docker build --tag hello-world-flask:test .
+          
+      - name: Test Docker image
+        run: |
+          # Run container
+          docker run -d --name test-app -p 5000:5000 hello-world-flask:test
+          
+          # Wait for app to start
+          sleep 10
+          
+          # Test health endpoint
+          curl -f http://localhost:5000/api/health
+          
+          # Test info endpoint
+          curl -f http://localhost:5000/api/info
+          
+          # Clean up
+          docker stop test-app
+          docker rm test-app
+
+  # Security scan
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Build image for scanning
+        run: |
+          cd app
+          docker build --tag hello-world-flask:scan .
+          
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'hello-world-flask:scan'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # Helm template test
+  helm-test:
+    name: Helm Template Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: '3.12.0'
+          
+      - name: Test staging templates
+        run: |
+          helm template hello-app-staging ./charts/hello-app \
+            --values ./charts/hello-app/values-staging.yaml \
+            --set image.tag=test \
+            --dry-run
+            
+      - name: Test production templates
+        run: |
+          helm template hello-app-production ./charts/hello-app \
+            --values ./charts/hello-app/values-production.yaml \
+            --set image.tag=v1.0.0 \
+            --dry-run

@@ -1,0 +1,22 @@
+# GitHub Environment Configuration for Production
+# This file is for documentation - actual environment setup is done in GitHub UI
+
+name: production
+description: Production environment with manual approval
+
+# Environment protection rules (configure in GitHub UI):
+# - Required reviewers: @senior-team, @platform-team
+# - Restrict to main branch and tags starting with 'v'
+# - Wait timer: 0 minutes (manual approval only)
+
+# Environment variables:
+# - ENVIRONMENT: production
+# - CLUSTER_NAME: gke-production
+# - REGION: us-east1
+
+# Secrets required:
+# - GCP_SA_KEY: Service account key for GCP authentication
+
+# Deployment branches:
+# - Only tags matching pattern: v*
+# - Main branch (for hotfixes only)

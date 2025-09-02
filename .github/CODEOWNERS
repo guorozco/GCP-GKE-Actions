@@ -1,0 +1,15 @@
+# Global owners
+* @your-github-username
+
+# Infrastructure code requires infrastructure team approval
+/infra/ @infrastructure-team @your-github-username
+
+# Production deployments require senior approval
+/.github/workflows/deploy.yml @senior-team @your-github-username
+
+# Helm charts require platform team approval
+/charts/ @platform-team @your-github-username
+
+# Security-related files require security team approval
+/SECURITY.md @security-team @your-github-username
+/.github/workflows/ @security-team @platform-team @your-github-username
