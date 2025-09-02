@@ -1,3 +1,5 @@
+#  Assignment Solution Plan and Documentation
+
 #  Complete Deployment Guide - GKE + Artifact Registry
 
 This guide covers deploying both GKE clusters and Artifact Registry using Terragrunt.
@@ -9,6 +11,7 @@ This guide covers deploying both GKE clusters and Artifact Registry using Terrag
 3. **Terragrunt** installed
 4. **Docker** installed (for container operations)
 5. **GCP Project** with billing enabled
+
 
 ##  Architecture Overview
 
