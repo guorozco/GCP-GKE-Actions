@@ -40,7 +40,7 @@ help: ## Show this help message
 # Prerequisites check
 check-env:
 	@if [ -z "$(TF_VAR_project_id)" ]; then \
-		echo "$(RED)❌ Error: TF_VAR_project_id environment variable not set$(RESET)"; \
+		echo "$(RED) Error: TF_VAR_project_id environment variable not set$(RESET)"; \
 		echo "$(YELLOW) Set it with: export TF_VAR_project_id=your-project-id$(RESET)"; \
 		echo "$(YELLOW) Or run: make setup$(RESET)"; \
 		exit 1; \
@@ -49,9 +49,9 @@ check-env:
 
 check-tools: ## Check if required tools are installed
 	@echo "$(BLUE) Checking required tools...$(RESET)"
-	@command -v gcloud >/dev/null 2>&1 || (echo "$(RED)❌ gcloud not found$(RESET)" && exit 1)
-	@command -v terraform >/dev/null 2>&1 || (echo "$(RED)❌ terraform not found$(RESET)" && exit 1)
-	@command -v terragrunt >/dev/null 2>&1 || (echo "$(RED)❌ terragrunt not found$(RESET)" && exit 1)
+	@command -v gcloud >/dev/null 2>&1 || (echo "$(RED) gcloud not found$(RESET)" && exit 1)
+	@command -v terraform >/dev/null 2>&1 || (echo "$(RED) terraform not found$(RESET)" && exit 1)
+	@command -v terragrunt >/dev/null 2>&1 || (echo "$(RED) terragrunt not found$(RESET)" && exit 1)
 	@echo "$(GREEN) All tools installed$(RESET)"
 
 setup: check-tools ## Run initial setup script
@@ -79,7 +79,7 @@ deploy-staging: check-env ## Deploy staging environment (init + apply)
 	cd environments/staging && terragrunt init && terragrunt apply
 
 deploy-production: check-env ## Deploy production environment (init + apply)
-	@echo "$(YELLOW)⚠️  WARNING: You are about to deploy to PRODUCTION!$(RESET)"
+	@echo "$(YELLOW)  WARNING: You are about to deploy to PRODUCTION!$(RESET)"
 	@echo "$(YELLOW) This will incur costs. Continue? [y/N]$(RESET)"
 	@read -r confirmation && [ "$$confirmation" = "y" ] || (echo "$(GREEN)Aborted$(RESET)" && exit 1)
 	@echo "$(BLUE) Deploying production environment...$(RESET)"
@@ -90,17 +90,17 @@ apply-staging: check-env ## Apply changes to staging environment
 	cd environments/staging && terragrunt apply
 
 apply-production: check-env ## Apply changes to production environment
-	@echo "$(YELLOW)⚠️  WARNING: You are about to apply changes to PRODUCTION!$(RESET)"
+	@echo "$(YELLOW)  WARNING: You are about to apply changes to PRODUCTION!$(RESET)"
 	@echo "$(YELLOW)Press Enter to continue or Ctrl+C to abort...$(RESET)"
 	@read
 	@echo "$(BLUE) Applying changes to production environment...$(RESET)"
 	cd environments/production && terragrunt apply
 
 destroy-staging: check-env ## Destroy staging environment
-	@echo "$(RED)⚠️  WARNING: This will destroy the STAGING environment!$(RESET)"
+	@echo "$(RED)  WARNING: This will destroy the STAGING environment!$(RESET)"
 	@echo "$(YELLOW)Type 'yes' to continue:$(RESET)"
 	@read -r confirmation && [ "$$confirmation" = "yes" ] || (echo "$(GREEN)Aborted$(RESET)" && exit 1)
-	@echo "$(RED)💥 Destroying staging environment...$(RESET)"
+	@echo "$(RED) Destroying staging environment...$(RESET)"
 	cd environments/staging && terragrunt destroy
 
 destroy-production: check-env ## Destroy production environment
@@ -108,7 +108,7 @@ destroy-production: check-env ## Destroy production environment
 	@echo "$(RED)This action cannot be undone!$(RESET)"
 	@echo "$(YELLOW)Type 'destroy-production' to continue:$(RESET)"
 	@read -r confirmation && [ "$$confirmation" = "destroy-production" ] || (echo "$(GREEN)Aborted$(RESET)" && exit 1)
-	@echo "$(RED)💥 Destroying production environment...$(RESET)"
+	@echo "$(RED) Destroying production environment...$(RESET)"
 	cd environments/production && terragrunt destroy
 
 validate-staging: ## Validate staging Terraform configuration
@@ -165,13 +165,13 @@ status-production: check-env ## Show status of production GKE cluster
 status: status-staging status-production ## Show status of all clusters
 
 kubeconfig-staging: check-env ## Get kubectl credentials for staging
-	@echo "$(BLUE)🔑 Getting staging kubeconfig...$(RESET)"
+	@echo "$(BLUE) Getting staging kubeconfig...$(RESET)"
 	gcloud container clusters get-credentials gke-staging --region=us-central1 --project=$(TF_VAR_project_id)
 	@echo "$(GREEN) Connected to staging cluster$(RESET)"
-	@kubectl get nodes 2>/dev/null || echo "$(YELLOW)⚠️  No nodes found (Autopilot manages nodes automatically)$(RESET)"
+	@kubectl get nodes 2>/dev/null || echo "$(YELLOW)  No nodes found (Autopilot manages nodes automatically)$(RESET)"
 
 kubeconfig-production: check-env ## Get kubectl credentials for production
-	@echo "$(BLUE)🔑 Getting production kubeconfig...$(RESET)"
+	@echo "$(BLUE) Getting production kubeconfig...$(RESET)"
 	gcloud container clusters get-credentials gke-production --region=us-east1 --project=$(TF_VAR_project_id)
 	@echo "$(GREEN) Connected to production cluster$(RESET)"
 	@kubectl get nodes
@@ -204,7 +204,7 @@ plan: check-env ## Plan environment (use ENV=staging|production)
 
 apply: check-env ## Apply environment (use ENV=staging|production)
 	@if [ "$(ENV)" = "production" ]; then \
-		echo "$(YELLOW)⚠️  WARNING: You are about to apply changes to PRODUCTION!$(RESET)"; \
+		echo "$(YELLOW)  WARNING: You are about to apply changes to PRODUCTION!$(RESET)"; \
 		echo "$(YELLOW)Press Enter to continue or Ctrl+C to abort...$(RESET)"; \
 		read; \
 	fi
@@ -216,10 +216,10 @@ validate: ## Validate environment configuration (use ENV=staging|production)
 	cd environments/$(ENV) && terragrunt validate
 
 destroy: check-env ## Destroy environment (use ENV=staging|production)
-	@echo "$(RED)⚠️  WARNING: This will destroy the $(ENV) environment!$(RESET)"
+	@echo "$(RED)  WARNING: This will destroy the $(ENV) environment!$(RESET)"
 	@echo "$(YELLOW)Type 'yes' to continue:$(RESET)"
 	@read -r confirmation && [ "$$confirmation" = "yes" ] || (echo "$(GREEN)Aborted$(RESET)" && exit 1)
-	@echo "$(RED)💥 Destroying $(ENV) environment...$(RESET)"
+	@echo "$(RED) Destroying $(ENV) environment...$(RESET)"
 	cd environments/$(ENV) && terragrunt destroy
 
 # Artifact Registry Commands
@@ -228,7 +228,7 @@ deploy-registry-staging: check-env ## Deploy Artifact Registry for staging
 	cd environments/staging/artifact-registry && terragrunt init && terragrunt apply
 
 deploy-registry-production: check-env ## Deploy Artifact Registry for production
-	@echo "$(YELLOW)⚠️  WARNING: You are about to deploy Artifact Registry to PRODUCTION!$(RESET)"
+	@echo "$(YELLOW)  WARNING: You are about to deploy Artifact Registry to PRODUCTION!$(RESET)"
 	@echo "$(YELLOW)Press Enter to continue or Ctrl+C to abort...$(RESET)"
 	@read
 	@echo "$(BLUE) Deploying Artifact Registry for production...$(RESET)"
@@ -255,7 +255,7 @@ list-registries: check-env ## List all Artifact Registry repositories
 	gcloud artifacts repositories list --project=$(TF_VAR_project_id)
 
 list-images: check-env ## List images in repositories
-	@echo "$(BLUE)🖼️  Listing images in repositories...$(RESET)"
+	@echo "$(BLUE)  Listing images in repositories...$(RESET)"
 	@echo "$(YELLOW)Staging Repository:$(RESET)"
 	@gcloud artifacts docker images list us-central1-docker.pkg.dev/$(TF_VAR_project_id)/staging-docker --project=$(TF_VAR_project_id) 2>/dev/null || echo "No images found"
 	@echo "$(YELLOW)Production Repository:$(RESET)"
