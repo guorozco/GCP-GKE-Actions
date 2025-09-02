@@ -260,3 +260,82 @@ list-images: check-env ## List images in repositories
 	@gcloud artifacts docker images list us-central1-docker.pkg.dev/$(TF_VAR_project_id)/staging-docker --project=$(TF_VAR_project_id) 2>/dev/null || echo "No images found"
 	@echo "$(YELLOW)Production Repository:$(RESET)"
 	@gcloud artifacts docker images list us-east1-docker.pkg.dev/$(TF_VAR_project_id)/production-docker --project=$(TF_VAR_project_id) 2>/dev/null || echo "No images found"
+
+# ==========================================
+# Hello World Flask App Management
+# ==========================================
+
+deploy-app-staging: check-env ## Deploy Hello World Flask app to staging
+	@echo "$(BLUE)🚀 Deploying Hello World Flask app to staging...$(RESET)"
+	@cd ../app && ./deploy.sh latest staging
+
+deploy-app-production: check-env ## Deploy Hello World Flask app to production
+	@echo "$(BLUE)🚀 Deploying Hello World Flask app to production...$(RESET)"
+	@cd ../app && ./deploy.sh v1.0.0 production
+
+deploy-app-version: check-env ## Deploy specific version to environment
+	@echo "$(BLUE)🚀 Deploying Hello World Flask app with custom version...$(RESET)"
+	@read -p "Enter version (e.g., v1.0.1): " version; \
+	read -p "Enter environment (staging/production): " env; \
+	cd ../app && ./deploy.sh $$version $$env
+
+test-app-local: check-env ## Test Hello World Flask app locally
+	@echo "$(BLUE)🧪 Testing Hello World Flask app locally...$(RESET)"
+	@cd ../app && docker build -t hello-world-flask:test . && \
+	echo "$(GREEN)✅ Build successful! Run: docker run -p 5000:5000 hello-world-flask:test$(RESET)"
+
+check-app-staging: check-env ## Check Hello World Flask app status in staging
+	@echo "$(BLUE)🔍 Checking Hello World Flask app in staging...$(RESET)"
+	@kubectl --context=gke_$(TF_VAR_project_id)_us-central1_gke-staging get pods -l app=hello-world-flask 2>/dev/null || echo "$(YELLOW)App not found in staging$(RESET)"
+	@kubectl --context=gke_$(TF_VAR_project_id)_us-central1_gke-staging get service hello-world-flask-service 2>/dev/null || echo "$(YELLOW)Service not found in staging$(RESET)"
+
+check-app-production: check-env ## Check Hello World Flask app status in production
+	@echo "$(BLUE)🔍 Checking Hello World Flask app in production...$(RESET)"
+	@kubectl --context=gke_$(TF_VAR_project_id)_us-east1_gke-production get pods -l app=hello-world-flask 2>/dev/null || echo "$(YELLOW)App not found in production$(RESET)"
+	@kubectl --context=gke_$(TF_VAR_project_id)_us-east1_gke-production get service hello-world-flask-service 2>/dev/null || echo "$(YELLOW)Service not found in production$(RESET)"
+
+logs-app-staging: check-env ## Get Hello World Flask app logs from staging
+	@echo "$(BLUE)📋 Getting Hello World Flask app logs from staging...$(RESET)"
+	@kubectl --context=gke_$(TF_VAR_project_id)_us-central1_gke-staging logs -l app=hello-world-flask --tail=100 2>/dev/null || echo "$(YELLOW)No logs found$(RESET)"
+
+logs-app-production: check-env ## Get Hello World Flask app logs from production
+	@echo "$(BLUE)📋 Getting Hello World Flask app logs from production...$(RESET)"
+	@kubectl --context=gke_$(TF_VAR_project_id)_us-east1_gke-production logs -l app=hello-world-flask --tail=100 2>/dev/null || echo "$(YELLOW)No logs found$(RESET)"
+
+scale-app-staging: check-env ## Scale Hello World Flask app in staging
+	@echo "$(BLUE)📈 Scaling Hello World Flask app in staging...$(RESET)"
+	@read -p "Enter replica count: " replicas; \
+	kubectl --context=gke_$(TF_VAR_project_id)_us-central1_gke-staging scale deployment hello-world-flask --replicas=$$replicas
+
+scale-app-production: check-env ## Scale Hello World Flask app in production
+	@echo "$(BLUE)📈 Scaling Hello World Flask app in production...$(RESET)"
+	@read -p "Enter replica count: " replicas; \
+	kubectl --context=gke_$(TF_VAR_project_id)_us-east1_gke-production scale deployment hello-world-flask --replicas=$$replicas
+
+delete-app-staging: check-env ## Delete Hello World Flask app from staging
+	@echo "$(BLUE)🗑️  Deleting Hello World Flask app from staging...$(RESET)"
+	@kubectl --context=gke_$(TF_VAR_project_id)_us-central1_gke-staging delete deployment,service,hpa -l app=hello-world-flask 2>/dev/null || echo "$(YELLOW)App not found$(RESET)"
+
+delete-app-production: check-env ## Delete Hello World Flask app from production
+	@echo "$(BLUE)🗑️  Deleting Hello World Flask app from production...$(RESET)"
+	@kubectl --context=gke_$(TF_VAR_project_id)_us-east1_gke-production delete deployment,service,hpa -l app=hello-world-flask 2>/dev/null || echo "$(YELLOW)App not found$(RESET)"
+
+get-app-url-staging: check-env ## Get the external URL for staging app
+	@echo "$(BLUE)🌐 Getting staging app URL...$(RESET)"
+	@SERVICE_IP=$$(kubectl --context=gke_$(TF_VAR_project_id)_us-central1_gke-staging get service hello-world-flask-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null); \
+	if [ "$$SERVICE_IP" = "" ]; then \
+		echo "$(YELLOW)External IP not yet assigned or app not deployed$(RESET)"; \
+	else \
+		echo "$(GREEN)Staging App URL: http://$$SERVICE_IP$(RESET)"; \
+		echo "$(CYAN)Health Check: http://$$SERVICE_IP/api/health$(RESET)"; \
+	fi
+
+get-app-url-production: check-env ## Get the external URL for production app
+	@echo "$(BLUE)🌐 Getting production app URL...$(RESET)"
+	@SERVICE_IP=$$(kubectl --context=gke_$(TF_VAR_project_id)_us-east1_gke-production get service hello-world-flask-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null); \
+	if [ "$$SERVICE_IP" = "" ]; then \
+		echo "$(YELLOW)External IP not yet assigned or app not deployed$(RESET)"; \
+	else \
+		echo "$(GREEN)Production App URL: http://$$SERVICE_IP$(RESET)"; \
+		echo "$(CYAN)Health Check: http://$$SERVICE_IP/api/health$(RESET)"; \
+	fi
