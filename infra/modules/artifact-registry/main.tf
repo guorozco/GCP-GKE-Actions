@@ -81,6 +81,11 @@ resource "google_artifact_registry_repository_iam_member" "writers" {
 # GKE Integration: Grant GKE service account access to pull images
 data "google_client_config" "default" {}
 
+# Get the project number for the correct service account format
+data "google_project" "current" {
+  project_id = var.project_id
+}
+
 # This data source will be used to get the GKE service account
 # We'll create this as a conditional resource that can be used if GKE integration is needed
 resource "google_artifact_registry_repository_iam_member" "gke_reader" {
@@ -88,7 +93,7 @@ resource "google_artifact_registry_repository_iam_member" "gke_reader" {
   location   = google_artifact_registry_repository.main.location
   repository = google_artifact_registry_repository.main.name
   role       = "roles/artifactregistry.reader"
-  member     = "serviceAccount:${data.google_client_config.default.project}-compute@developer.gserviceaccount.com"
+  member     = "serviceAccount:${data.google_project.current.number}-compute@developer.gserviceaccount.com"
 }
 
 # Store Artifact Registry credentials in Secret Manager
