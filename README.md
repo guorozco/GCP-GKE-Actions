@@ -12,7 +12,6 @@ This guide covers deploying both GKE clusters and Artifact Registry using Terrag
 4. **Docker** installed (for container operations)
 5. **GCP Project** with billing enabled
 
-
 ##  Architecture Overview
 
 ```
@@ -481,7 +480,7 @@ cd ../production
 terragrunt destroy
 ```
 
-## 🆘 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -943,7 +942,7 @@ This document outlines security best practices for this GKE infrastructure proje
 
 The following files contain sensitive information and should **NEVER** be committed to Git:
 
-### 🔑 Credentials & Keys
+### Credentials & Keys
 - `*.json` - Service account keys
 - `*-sa-key.json` - Terraform service account keys  
 - `.env*` - Environment files with secrets
@@ -1076,52 +1075,6 @@ git secrets --scan
      --iam-account=new-sa-name@PROJECT_ID.iam.gserviceaccount.com
    ```
 
-### If Repository is Compromised:
-
-1. **Remove sensitive data:**
-   ```bash
-   # Use BFG Repo-Cleaner
-   git clone --mirror git://example.com/repo.git
-   java -jar bfg.jar --delete-files id_rsa repo.git
-   ```
-
-2. **Rotate all credentials** that might have been exposed
-
-3. **Review commit history** for unauthorized changes
-
-##  Security Checklist
-
-Before deployment, ensure:
-
-- [ ] No hardcoded credentials in code
-- [ ] All sensitive files in `.gitignore`
-- [ ] Service accounts follow least privilege
-- [ ] Workload Identity is enabled
-- [ ] Audit logging is configured
-- [ ] Billing alerts are set up
-- [ ] Network policies are in place
-- [ ] Private clusters are used
-- [ ] Node auto-upgrade is enabled
-- [ ] Security patches are applied
-
-##  Additional Resources
-
-- [GKE Security Best Practices](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster)
-- [Terraform Security](https://learn.hashicorp.com/tutorials/terraform/sensitive-variables)
-- [Google Cloud Security Command Center](https://cloud.google.com/security-command-center)
-- [CIS Kubernetes Benchmark](https://www.cisecurity.org/benchmark/kubernetes)
-
-## 📞 Reporting Security Issues
-
-If you discover a security vulnerability:
-1. **Do NOT** create a public issue
-2. Contact the project maintainers directly
-3. Provide detailed information about the vulnerability
-4. Allow time for remediation before disclosure
-
----
-
-**Remember: Security is everyone's responsibility! **
 
 # CI/CD Pipeline Setup Guide
 
