@@ -152,7 +152,7 @@ jobs:
           kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=hello-app-staging --timeout=300s
           
           # Get service name and test connectivity
-          STAGING_SERVICE="hello-app-staging-hello-app"
+          STAGING_SERVICE="hello-app-staging-service"
           
           # Try to get external IP first, fallback to port-forward
           EXTERNAL_IP=$(kubectl get service $STAGING_SERVICE -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
@@ -260,7 +260,7 @@ jobs:
           kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=hello-app-production --timeout=600s
           
           # Get service name and test connectivity
-          PRODUCTION_SERVICE="hello-app-production-hello-app"
+          PRODUCTION_SERVICE="hello-app-production-service"
           
           # Try to get external IP, fallback to port-forward
           EXTERNAL_IP=$(kubectl get service $PRODUCTION_SERVICE -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")

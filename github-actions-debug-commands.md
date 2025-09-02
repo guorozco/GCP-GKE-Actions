@@ -59,12 +59,12 @@ kubectl get all
 
 ### 10. Verify Helm Service Names
 ```bash
-# Helm creates services with this pattern: <release-name>-<chart-name>
-# For staging: hello-app-staging-hello-app
-# For production: hello-app-production-hello-app
+# Helm creates services with this pattern: <release-name>-service
+# For staging: hello-app-staging-service
+# For production: hello-app-production-service
 
-kubectl get service hello-app-staging-hello-app
-kubectl get service hello-app-production-hello-app
+kubectl get service hello-app-staging-service
+kubectl get service hello-app-production-service
 ```
 
 ## Common Issues and Solutions
@@ -75,7 +75,7 @@ kubectl get service hello-app-production-hello-app
 
 ### Issue: Wrong Service Name in Port-Forward
 **Symptoms:** "service not found" errors
-**Solution:** Use Helm-generated service names: `<release-name>-<chart-name>`
+**Solution:** Use Helm-generated service names: `<release-name>-service`
 
 ### Issue: Pods Not Ready Due to Health Checks
 **Symptoms:** Pods stuck in "Not Ready" state
@@ -103,7 +103,7 @@ kubectl auth can-i create deployments
 ### Test Connectivity Locally
 ```bash
 # Port forward to test app
-kubectl port-forward service/hello-app-staging-hello-app 8080:80
+kubectl port-forward service/hello-app-staging-service 8080:80
 
 # Test health endpoint
 curl http://localhost:8080/api/health
