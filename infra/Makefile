@@ -221,3 +221,42 @@ destroy: check-env ## Destroy environment (use ENV=staging|production)
 	@read -r confirmation && [ "$$confirmation" = "yes" ] || (echo "$(GREEN)Aborted$(RESET)" && exit 1)
 	@echo "$(RED)💥 Destroying $(ENV) environment...$(RESET)"
 	cd environments/$(ENV) && terragrunt destroy
+
+# Artifact Registry Commands
+deploy-registry-staging: check-env ## Deploy Artifact Registry for staging
+	@echo "$(BLUE)🐳 Deploying Artifact Registry for staging...$(RESET)"
+	cd environments/staging/artifact-registry && terragrunt init && terragrunt apply
+
+deploy-registry-production: check-env ## Deploy Artifact Registry for production
+	@echo "$(YELLOW)⚠️  WARNING: You are about to deploy Artifact Registry to PRODUCTION!$(RESET)"
+	@echo "$(YELLOW)Press Enter to continue or Ctrl+C to abort...$(RESET)"
+	@read
+	@echo "$(BLUE)🐳 Deploying Artifact Registry for production...$(RESET)"
+	cd environments/production/artifact-registry && terragrunt init && terragrunt apply
+
+deploy-registry-shared: check-env ## Deploy shared Artifact Registry
+	@echo "$(BLUE)🐳 Deploying shared Artifact Registry...$(RESET)"
+	cd environments/common/artifact-registry && terragrunt init && terragrunt apply
+
+configure-docker-staging: check-env ## Configure Docker to use staging registry
+	@echo "$(BLUE)🔧 Configuring Docker for staging registry...$(RESET)"
+	gcloud auth configure-docker us-central1-docker.pkg.dev --project=$(TF_VAR_project_id)
+
+configure-docker-production: check-env ## Configure Docker to use production registry
+	@echo "$(BLUE)🔧 Configuring Docker for production registry...$(RESET)"
+	gcloud auth configure-docker us-east1-docker.pkg.dev --project=$(TF_VAR_project_id)
+
+configure-docker-all: check-env ## Configure Docker for all registries
+	@echo "$(BLUE)🔧 Configuring Docker for all registries...$(RESET)"
+	gcloud auth configure-docker us-central1-docker.pkg.dev,us-east1-docker.pkg.dev --project=$(TF_VAR_project_id)
+
+list-registries: check-env ## List all Artifact Registry repositories
+	@echo "$(BLUE)📦 Listing Artifact Registry repositories...$(RESET)"
+	gcloud artifacts repositories list --project=$(TF_VAR_project_id)
+
+list-images: check-env ## List images in repositories
+	@echo "$(BLUE)🖼️  Listing images in repositories...$(RESET)"
+	@echo "$(YELLOW)Staging Repository:$(RESET)"
+	@gcloud artifacts docker images list us-central1-docker.pkg.dev/$(TF_VAR_project_id)/staging-docker --project=$(TF_VAR_project_id) 2>/dev/null || echo "No images found"
+	@echo "$(YELLOW)Production Repository:$(RESET)"
+	@gcloud artifacts docker images list us-east1-docker.pkg.dev/$(TF_VAR_project_id)/production-docker --project=$(TF_VAR_project_id) 2>/dev/null || echo "No images found"
