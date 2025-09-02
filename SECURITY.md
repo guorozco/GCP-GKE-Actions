@@ -1,8 +1,8 @@
-# 🔐 Security Guidelines
+#  Security Guidelines
 
 This document outlines security best practices for this GKE infrastructure project.
 
-## 🚨 Never Commit These Files
+##  Never Commit These Files
 
 The following files contain sensitive information and should **NEVER** be committed to Git:
 
@@ -13,16 +13,16 @@ The following files contain sensitive information and should **NEVER** be commit
 - `kubeconfig*` - Kubernetes configuration files
 - `*.pem`, `*.key` - SSH keys and certificates
 
-### 🏗️ Terraform State
+###  Terraform State
 - `*.tfstate*` - Contains resource IDs and sensitive data
 - `terraform.tfvars` - May contain sensitive variable values
 - `.terraform/` - Local terraform cache
 
-### 📝 Logs
+###  Logs
 - `*.log` - May contain sensitive output
 - `terraform.log`, `terragrunt.log` - Deployment logs
 
-## ✅ Safe to Commit
+##  Safe to Commit
 
 These files are safe to commit:
 - `*.tf` - Terraform configuration (without hardcoded secrets)
@@ -31,7 +31,7 @@ These files are safe to commit:
 - `Makefile` - Build scripts
 - `.gitignore` - This file itself
 
-## 🛡️ Security Best Practices
+##  Security Best Practices
 
 ### 1. Use Environment Variables
 ```bash
@@ -77,7 +77,7 @@ gcloud projects add-iam-policy-binding PROJECT_ID \
   --role="roles/container.developer"
 ```
 
-## 🔍 Monitoring Security
+##  Monitoring Security
 
 ### 1. Enable Audit Logging
 ```yaml
@@ -107,7 +107,7 @@ gcloud container images scan IMAGE_URL
 git secrets --scan
 ```
 
-## 🚨 Incident Response
+##  Incident Response
 
 ### If Credentials Are Compromised:
 
@@ -152,7 +152,7 @@ git secrets --scan
 
 3. **Review commit history** for unauthorized changes
 
-## 📋 Security Checklist
+##  Security Checklist
 
 Before deployment, ensure:
 
@@ -167,7 +167,7 @@ Before deployment, ensure:
 - [ ] Node auto-upgrade is enabled
 - [ ] Security patches are applied
 
-## 🔗 Additional Resources
+##  Additional Resources
 
 - [GKE Security Best Practices](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster)
 - [Terraform Security](https://learn.hashicorp.com/tutorials/terraform/sensitive-variables)
@@ -184,4 +184,4 @@ If you discover a security vulnerability:
 
 ---
 
-**Remember: Security is everyone's responsibility! 🛡️**
+**Remember: Security is everyone's responsibility! **

@@ -28,7 +28,7 @@ log_error() {
 }
 
 # Main script
-echo -e "${BLUE}🐳 Artifact Registry Test Script${NC}"
+echo -e "${BLUE} Artifact Registry Test Script${NC}"
 echo "=================================="
 
 # Check prerequisites
@@ -150,7 +150,7 @@ fi
 
 # Summary
 echo ""
-echo -e "${GREEN}🎉 Test completed!${NC}"
+echo -e "${GREEN} Test completed!${NC}"
 echo "=================================="
 echo ""
 echo -e "${BLUE}Next steps:${NC}"
@@ -163,4 +163,4 @@ echo "• make list-registries        # List all registries"
 echo "• make list-images           # List all images"
 echo "• make configure-docker-all  # Configure Docker auth"
 echo ""
-echo -e "${GREEN}Happy containerizing! 🐳${NC}"
+echo -e "${GREEN}Happy containerizing! ${NC}"

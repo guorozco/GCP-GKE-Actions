@@ -1,17 +1,17 @@
-# 🧹 Repository Cleanup Guide
+#  Repository Cleanup Guide
 
 This guide helps you clean up sensitive files and maintain repository security.
 
-## 🚨 Sensitive Files Removed from Staging
+##  Sensitive Files Removed from Staging
 
 The following sensitive files were unstaged and will not be committed:
 
-- ✅ `.env.local` - Environment variables (may contain secrets)
-- ✅ `terraform-sa-key.json` - Service account key file
-- ✅ `infra/environments/staging/terraform-sa-key.json` - Service account key
-- ✅ `infra/environments/staging/terraform.log` - Deployment logs
+-  `.env.local` - Environment variables (may contain secrets)
+-  `terraform-sa-key.json` - Service account key file
+-  `infra/environments/staging/terraform-sa-key.json` - Service account key
+-  `infra/environments/staging/terraform.log` - Deployment logs
 
-## 🗑️ Clean Up Sensitive Files
+##  Clean Up Sensitive Files
 
 **IMPORTANT**: These files are still in your working directory. Remove them to prevent accidental exposure:
 
@@ -38,17 +38,17 @@ find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
 find . -name ".terraform" -type d -exec rm -rf {} +
 ```
 
-## ✅ Safe Files to Commit
+##  Safe Files to Commit
 
 These files are now staged and safe to commit:
 
-- 📝 Documentation files (`*.md`)
-- 🏗️ Infrastructure code (`*.tf`, `*.hcl`)
-- 🔧 Build scripts (`Makefile`)
-- 🔒 Security files (`.gitignore`, `SECURITY.md`)
-- 🔐 Terraform lock files (`.terraform.lock.hcl`)
+-  Documentation files (`*.md`)
+-  Infrastructure code (`*.tf`, `*.hcl`)
+-  Build scripts (`Makefile`)
+-  Security files (`.gitignore`, `SECURITY.md`)
+-  Terraform lock files (`.terraform.lock.hcl`)
 
-## 🔍 Verify Protection
+##  Verify Protection
 
 Check what files are now ignored:
 
@@ -62,7 +62,7 @@ git status  # Should not show the file
 rm test-sa-key.json
 ```
 
-## 📋 Security Checklist
+##  Security Checklist
 
 Before committing, ensure:
 
@@ -73,7 +73,7 @@ Before committing, ensure:
 - [ ] No SSH keys (`*.pem`, `*.key`)
 - [ ] No kubeconfig files
 
-## 🚀 Next Steps
+##  Next Steps
 
 1. **Clean up sensitive files** using the commands above
 2. **Commit the changes**:
@@ -97,7 +97,7 @@ Before committing, ensure:
    gcloud secrets create app-secret --data-file=secret.txt
    ```
 
-## ⚠️ If You Already Committed Sensitive Data
+## ⚠ If You Already Committed Sensitive Data
 
 If sensitive files were already committed to Git history:
 
@@ -127,4 +127,4 @@ If sensitive files were already committed to Git history:
 
 ---
 
-**Your repository is now properly secured! 🔐**
+**Your repository is now properly secured! **

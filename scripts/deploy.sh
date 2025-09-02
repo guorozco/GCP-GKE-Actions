@@ -35,7 +35,7 @@ log_header() {
 }
 
 # Main script
-echo -e "${PURPLE}🚀 Free Tier Optimized GKE Deployment${NC}"
+echo -e "${PURPLE} Free Tier Optimized GKE Deployment${NC}"
 echo -e "${CYAN}======================================${NC}"
 
 # Environment selection
@@ -172,7 +172,7 @@ esac
 # Post-deployment summary
 log_header "Deployment Summary"
 
-echo -e "${GREEN}✅ Deployment completed successfully!${NC}"
+echo -e "${GREEN} Deployment completed successfully!${NC}"
 echo ""
 echo -e "${BLUE}Next Steps:${NC}"
 echo "1. Deploy a sample application"
@@ -192,4 +192,4 @@ echo "• Monitor usage regularly: make monitor"
 echo "• Scale down when not needed"
 echo "• Consider using staging for development"
 echo ""
-echo -e "${GREEN}Happy Kubernetes-ing! 🚀${NC}"
+echo -e "${GREEN}Happy Kubernetes-ing! ${NC}"

@@ -1,8 +1,8 @@
-# 🐳 Artifact Registry - Docker Container Management
+#  Artifact Registry - Docker Container Management
 
 This guide covers how to use Google Artifact Registry for Docker images with your GKE infrastructure.
 
-## 🎯 Overview
+##  Overview
 
 Your infrastructure includes three Artifact Registry repositories:
 
@@ -10,7 +10,7 @@ Your infrastructure includes three Artifact Registry repositories:
 - **Production**: `us-east1-docker.pkg.dev/PROJECT_ID/production-docker`
 - **Shared**: `us-central1-docker.pkg.dev/PROJECT_ID/shared-docker`
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### 1. Deploy Artifact Registry
 
@@ -52,7 +52,7 @@ docker tag my-app:latest us-central1-docker.pkg.dev/$TF_VAR_project_id/staging-d
 docker push us-central1-docker.pkg.dev/$TF_VAR_project_id/staging-docker/my-app:latest
 ```
 
-## 📦 Repository Configuration
+##  Repository Configuration
 
 ### Staging Repository
 - **Location**: `us-central1` (same as GKE staging)
@@ -72,7 +72,7 @@ docker push us-central1-docker.pkg.dev/$TF_VAR_project_id/staging-docker/my-app:
 - **Immutable tags**: Enabled
 - **Purpose**: Base images, shared libraries
 
-## 🔧 Common Commands
+##  Common Commands
 
 ### Docker Operations
 
@@ -121,7 +121,7 @@ gcloud artifacts docker tags list \
   --project=$TF_VAR_project_id
 ```
 
-## 🔐 Security & Access Control
+##  Security & Access Control
 
 ### Service Accounts
 
@@ -154,7 +154,7 @@ spec:
         image: us-central1-docker.pkg.dev/PROJECT_ID/staging-docker/my-app:latest
 ```
 
-## 🏗️ CI/CD Integration
+##  CI/CD Integration
 
 ### GitHub Actions Example
 
@@ -201,7 +201,7 @@ build:
     - docker push us-central1-docker.pkg.dev/$PROJECT_ID/staging-docker/my-app:$CI_COMMIT_SHA
 ```
 
-## 💰 Cost Optimization
+##  Cost Optimization
 
 ### Cleanup Policies
 
@@ -235,7 +235,7 @@ gcloud artifacts docker images list \
   xargs -I {} gcloud artifacts docker images delete {} --quiet
 ```
 
-## 🔍 Monitoring & Troubleshooting
+##  Monitoring & Troubleshooting
 
 ### View Repository Details
 
@@ -273,7 +273,7 @@ gcloud artifacts docker images scan \
    make list-registries
    ```
 
-## 📊 Best Practices
+##  Best Practices
 
 ### Tagging Strategy
 
@@ -324,6 +324,6 @@ gcloud artifacts docker images delete \
 
 ---
 
-**Happy containerizing! 🐳**
+**Happy containerizing! **
 
 *Your Docker images are now securely stored and ready for deployment to your GKE clusters!*

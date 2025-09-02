@@ -1,0 +1,76 @@
+Hello World Flask App has been deployed!
+
+Chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+Release: {{ .Release.Name }}
+Namespace: {{ .Release.Namespace }}
+Environment: {{ .Values.app.environment }}
+
+Deployment Summary:
+• App Name: {{ .Values.app.name }}
+• Image: {{ include "hello-app.image" . }}
+• Replicas: {{ .Values.replicaCount }}
+• Service Type: {{ .Values.service.type }}
+
+{{- if eq .Values.service.type "LoadBalancer" }}
+
+Getting the application URL:
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        You can watch the status by running:
+
+  kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "hello-app.fullname" . }}-service
+
+  Once you have an external IP, you can access your application at:
+
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "hello-app.fullname" . }}-service --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo "App URL: http://$SERVICE_IP:{{ .Values.service.port }}"
+
+{{- else if eq .Values.service.type "ClusterIP" }}
+
+Getting the application URL:
+
+  Your application is available via ClusterIP. To access it:
+
+  1. Port forward to your local machine:
+     kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "hello-app.fullname" . }}-service {{ .Values.service.port }}:{{ .Values.service.port }}
+
+  2. Access the app at: http://127.0.0.1:{{ .Values.service.port }}
+
+{{- else if eq .Values.service.type "NodePort" }}
+
+Getting the application URL:
+
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "hello-app.fullname" . }}-service)
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo "App URL: http://$NODE_IP:$NODE_PORT"
+
+{{- end }}
+
+Useful Commands:
+
+  # Check pod status
+  kubectl get pods --namespace {{ .Release.Namespace }} -l "{{ include "hello-app.selectorLabels" . | replace "\n" "," }}"
+
+  # View application logs
+  kubectl logs --namespace {{ .Release.Namespace }} -l "{{ include "hello-app.selectorLabels" . | replace "\n" "," }}"
+
+  # Check service status
+  kubectl get service --namespace {{ .Release.Namespace }} {{ include "hello-app.fullname" . }}-service
+
+{{- if .Values.autoscaling.enabled }}
+  # Check horizontal pod autoscaler
+  kubectl get hpa --namespace {{ .Release.Namespace }} {{ include "hello-app.fullname" . }}-hpa
+{{- end }}
+
+API Endpoints:
+• Health Check: /api/health
+• App Info: /api/info  
+• Version: /api/version
+
+Scale your application:
+  kubectl scale --namespace {{ .Release.Namespace }} deployment/{{ include "hello-app.fullname" . }} --replicas=5
+
+Uninstall this release:
+  helm uninstall {{ .Release.Name }} --namespace {{ .Release.Namespace }}
+
+Happy coding!

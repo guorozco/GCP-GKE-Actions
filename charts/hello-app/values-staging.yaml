@@ -1,0 +1,68 @@
+# Staging environment overrides
+# These values override the defaults in values.yaml for staging
+
+app:
+  environment: staging
+
+# Image configuration for staging
+image:
+  repository: us-central1-docker.pkg.dev/test-demo-123456-guillermo/staging-docker/hello-world-flask
+  tag: "latest"
+
+# Replica configuration for staging
+replicaCount: 2
+
+# Autoscaling for staging (conservative)
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Service configuration for staging (internal access)
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 5000
+
+# Resource limits for staging (cost-optimized)
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# Environment variables for staging
+env:
+  - name: ENVIRONMENT
+    value: "staging"
+  - name: APP_VERSION
+    value: "1.0.0"
+  - name: PORT
+    value: "5000"
+
+# Staging-specific labels
+labels:
+  environment: staging
+  tier: staging
+
+# Pod disruption budget for staging
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+# Ingress for staging (optional)
+ingress:
+  enabled: false
+  className: "gce"
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "staging-hello-app-ip"
+  hosts:
+    - host: staging-hello-app.example.com
+      paths:
+        - path: /
+          pathType: Prefix

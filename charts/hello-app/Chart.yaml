@@ -1,0 +1,21 @@
+apiVersion: v2
+name: hello-app
+description: A Helm chart for Hello World Flask application on GKE
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+home: https://github.com/your-org/GCP-GKE-Actions
+sources:
+  - https://github.com/your-org/GCP-GKE-Actions
+maintainers:
+  - name: Your Name
+    email: your.email@example.com
+keywords:
+  - flask
+  - python
+  - gke
+  - kubernetes
+  - web-app
+annotations:
+  category: Web Application
+  licenses: MIT

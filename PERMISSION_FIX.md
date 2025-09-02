@@ -1,14 +1,14 @@
-# 🔐 GKE Permission Issues - Solutions
+#  GKE Permission Issues - Solutions
 
 This error occurs because your user account doesn't have the required permissions to use the default compute service account for GKE.
 
-## 🎯 Error Analysis
+##  Error Analysis
 
 **Error**: `The user does not have access to service account "XXXXXX-compute@developer.gserviceaccount.com". Ask a project owner to grant you the iam.serviceAccountUser role`
 
 **Root Cause**: Missing IAM permissions to use the default compute service account.
 
-## 🔧 Solution Options
+##  Solution Options
 
 ### Option 1: Grant Required Permissions (Recommended)
 
@@ -101,7 +101,7 @@ Since this is an Autopilot cluster, we can simplify the configuration to avoid t
 # The configuration has been updated to work better with Autopilot
 ```
 
-## 🚀 Quick Fix Commands
+##  Quick Fix Commands
 
 ### Try This First (Most Common Solution):
 
@@ -140,7 +140,7 @@ terragrunt init
 terragrunt apply
 ```
 
-## 🔍 Verification
+##  Verification
 
 After applying the permissions, verify them:
 
@@ -155,7 +155,7 @@ gcloud projects get-iam-policy $TF_VAR_project_id \
 gcloud container clusters list --project=$TF_VAR_project_id
 ```
 
-## 🆘 If Still Having Issues
+## If Still Having Issues
 
 1. **Contact Project Owner**: If you're not the project owner, ask them to grant you these roles:
    - `roles/iam.serviceAccountUser`
@@ -171,7 +171,7 @@ gcloud container clusters list --project=$TF_VAR_project_id
    gcloud services enable iam.googleapis.com
    ```
 
-## 📋 Required IAM Roles Summary
+##  Required IAM Roles Summary
 
 For GKE deployment, your user needs:
 - `roles/iam.serviceAccountUser` - To use service accounts
@@ -179,7 +179,7 @@ For GKE deployment, your user needs:
 - `roles/compute.admin` - To manage compute resources
 - `roles/storage.admin` - For Terraform state storage
 
-## 🎯 Next Steps
+##  Next Steps
 
 1. Try **Option 1** first (grant permissions)
 2. If that fails, try **Option 2** (application default credentials)

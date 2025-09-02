@@ -35,7 +35,7 @@ check_command() {
 }
 
 # Main script
-echo -e "${BLUE}🚀 GKE Infrastructure Setup${NC}"
+echo -e "${BLUE} GKE Infrastructure Setup${NC}"
 echo "=================================="
 
 # Check prerequisites
@@ -185,7 +185,7 @@ log_success "Environment file created: $env_file"
 
 # Summary
 echo ""
-echo -e "${GREEN}🎉 Setup completed successfully!${NC}"
+echo -e "${GREEN} Setup completed successfully!${NC}"
 echo "=================================="
 echo ""
 echo -e "${BLUE}Next steps:${NC}"
@@ -206,5 +206,5 @@ echo "• Keep your service account key secure"
 echo "• Review terraform plans before applying"
 echo "• Use staging environment for testing"
 echo ""
-echo -e "${GREEN}Happy deploying! 🚀${NC}"
+echo -e "${GREEN}Happy deploying! ${NC}"
 

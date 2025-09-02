@@ -1,0 +1,88 @@
+# Production environment overrides
+# These values override the defaults in values.yaml for production
+
+app:
+  environment: production
+
+# Image configuration for production
+image:
+  repository: us-east1-docker.pkg.dev/test-demo-123456-guillermo/production-docker/hello-world-flask
+  tag: "v1.0.0"
+
+# Replica configuration for production (higher availability)
+replicaCount: 4
+
+# Autoscaling for production (more aggressive)
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Service configuration for production (external access)
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 5000
+  annotations:
+    cloud.google.com/load-balancer-type: "External"
+
+# Resource limits for production (higher performance)
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Environment variables for production
+env:
+  - name: ENVIRONMENT
+    value: "production"
+  - name: APP_VERSION
+    value: "1.0.0"
+  - name: PORT
+    value: "5000"
+
+# Production-specific labels
+labels:
+  environment: production
+  tier: production
+
+# Pod disruption budget for production (higher availability)
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+# Ingress for production
+ingress:
+  enabled: false
+  className: "gce"
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "production-hello-app-ip"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: hello-app.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: hello-app-tls
+      hosts:
+        - hello-app.example.com
+
+# Node affinity for production (prefer stable nodes)
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      preference:
+        matchExpressions:
+        - key: cloud.google.com/gke-preemptible
+          operator: DoesNotExist
+
+# Production-specific tolerations (avoid preemptible nodes)
+tolerations: []

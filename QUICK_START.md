@@ -1,4 +1,4 @@
-# 🚀 Quick Start Guide - GKE Free Tier
+#  Quick Start Guide - GKE Free Tier
 
 This is a streamlined guide to get your GKE cluster running on the free tier as quickly as possible.
 
@@ -67,7 +67,7 @@ kubectl cluster-info
 kubectl get nodes
 ```
 
-## 🎯 What You Get
+##  What You Get
 
 - **GKE Autopilot cluster** (most cost-effective)
 - **Free tier optimized** (e2-micro instances)
@@ -75,12 +75,12 @@ kubectl get nodes
 - **Private cluster** with security best practices
 - **Workload Identity** for secure GCP access
 
-## 💰 Cost Estimate
+##  Cost Estimate
 
 - **Staging**: ~$0-10/month (with free tier credits)
 - Uses GKE Autopilot for optimal cost management
 
-## 🛠️ Optional: Production Deployment
+##  Optional: Production Deployment
 
 ```bash
 # Navigate to production
@@ -97,7 +97,7 @@ gcloud container clusters get-credentials gke-production \
   --project=$TF_VAR_project_id
 ```
 
-## 🧹 Cleanup
+##  Cleanup
 
 When you're done testing:
 ```bash
@@ -115,7 +115,7 @@ terragrunt destroy
 ### Common Issues
 
 1. **"Duplicate required providers"**
-   - Fixed in this version ✅
+   - Fixed in this version 
 
 2. **"Project not found"**
    ```bash
@@ -142,4 +142,4 @@ terragrunt destroy
 
 ---
 
-**Ready to deploy? Run the commands above and you'll have a GKE cluster in minutes! 🚀**
+**Ready to deploy? Run the commands above and you'll have a GKE cluster in minutes! **

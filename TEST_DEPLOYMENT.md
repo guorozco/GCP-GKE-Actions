@@ -1,8 +1,8 @@
-# 🧪 Test Your Deployment
+#  Test Your Deployment
 
 This guide helps you verify that your GKE deployment is working correctly.
 
-## ✅ Deployment Verification
+##  Deployment Verification
 
 ### 1. Check Cluster Status
 ```bash
@@ -48,7 +48,7 @@ kubectl get nodes -o wide
 kubectl version
 ```
 
-## 🚀 Deploy Test Application
+##  Deploy Test Application
 
 ### 1. Create Test Namespace
 ```bash
@@ -135,7 +135,7 @@ curl http://$EXTERNAL_IP
 echo "Open http://$EXTERNAL_IP in your browser"
 ```
 
-## 📊 Resource Monitoring
+##  Resource Monitoring
 
 ### 1. Check Resource Usage
 ```bash
@@ -161,7 +161,7 @@ kubectl describe pods -n test-app
 gcloud compute instances list --filter="name~gke-production"
 ```
 
-## 🔍 Troubleshooting Tests
+##  Troubleshooting Tests
 
 ### Common Issues
 
@@ -204,7 +204,7 @@ kubectl delete namespace test-app
 kubectl get events --sort-by='.lastTimestamp'
 ```
 
-## 💰 Cost Monitoring
+##  Cost Monitoring
 
 ### 1. Check Billing
 ```bash
@@ -227,7 +227,7 @@ gcloud compute disks list
 gcloud compute forwarding-rules list
 ```
 
-## 🧹 Cleanup Test Resources
+##  Cleanup Test Resources
 
 ### Remove Test Application
 ```bash
@@ -248,7 +248,7 @@ kubectl delete deployment nginx-test -n test-app
 kubectl delete service nginx-service -n test-app
 ```
 
-## ✅ Success Checklist
+##  Success Checklist
 
 - [ ] Cluster is running and accessible
 - [ ] Nodes are in Ready state
@@ -260,7 +260,7 @@ kubectl delete service nginx-service -n test-app
 - [ ] Logs are accessible
 - [ ] Monitoring is working
 
-## 🎉 Next Steps
+##  Next Steps
 
 If all tests pass:
 

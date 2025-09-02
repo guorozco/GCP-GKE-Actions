@@ -1,8 +1,8 @@
-# 🚀 Complete Deployment Guide - GKE + Artifact Registry
+#  Complete Deployment Guide - GKE + Artifact Registry
 
 This guide covers deploying both GKE clusters and Artifact Registry using Terragrunt.
 
-## 📋 Prerequisites
+##  Prerequisites
 
 1. **Google Cloud SDK** installed and configured
 2. **Terraform** >= 1.0 installed
@@ -10,7 +10,7 @@ This guide covers deploying both GKE clusters and Artifact Registry using Terrag
 4. **Docker** installed (for container operations)
 5. **GCP Project** with billing enabled
 
-## 🎯 Architecture Overview
+##  Architecture Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -42,7 +42,7 @@ This guide covers deploying both GKE clusters and Artifact Registry using Terrag
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 🚀 Complete Deployment
+##  Complete Deployment
 
 ### Step 1: Initial Setup
 
@@ -101,7 +101,7 @@ make kubeconfig-staging
 make kubeconfig-production
 ```
 
-## 🎯 Environment-Specific Deployments
+##  Environment-Specific Deployments
 
 ### Staging Environment
 
@@ -139,7 +139,7 @@ gcloud container clusters get-credentials gke-production \
   --region=us-east1 --project=$TF_VAR_project_id
 ```
 
-## 🐳 Container Workflow
+##  Container Workflow
 
 ### 1. Build and Push Images
 
@@ -195,7 +195,7 @@ kubectl create deployment my-app \
   --image=us-east1-docker.pkg.dev/$TF_VAR_project_id/production-docker/my-app:v1.0
 ```
 
-## 📊 Monitoring and Management
+##  Monitoring and Management
 
 ### Check Resource Usage
 
@@ -223,7 +223,7 @@ kubectl get pods --all-namespaces
 kubectl get services --all-namespaces
 ```
 
-## 🔐 Security Configuration
+##  Security Configuration
 
 ### Service Account Setup
 
@@ -247,7 +247,7 @@ gcloud projects get-iam-policy $TF_VAR_project_id \
   --filter="bindings.members:$(gcloud config get-value account)"
 ```
 
-## 💰 Cost Optimization
+##  Cost Optimization
 
 ### Free Tier Optimizations
 
@@ -270,7 +270,7 @@ gcloud billing budgets list
 make monitor
 ```
 
-## 🧹 Cleanup and Maintenance
+##  Cleanup and Maintenance
 
 ### Clean Up Test Resources
 
@@ -302,7 +302,7 @@ cd environments/production/artifact-registry && terragrunt destroy
 cd environments/common/artifact-registry && terragrunt destroy
 ```
 
-## 🆘 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -348,7 +348,7 @@ kubectl cluster-info
 kubectl get nodes
 ```
 
-## 📚 Next Steps
+##  Next Steps
 
 1. **Set up CI/CD** pipelines for automated deployments
 2. **Configure monitoring** and alerting
@@ -356,7 +356,7 @@ kubectl get nodes
 4. **Set up staging/production** promotion workflows
 5. **Add custom applications** to your clusters
 
-## 🔗 Additional Resources
+##  Additional Resources
 
 - [GKE Documentation](https://cloud.google.com/kubernetes-engine/docs)
 - [Artifact Registry Documentation](https://cloud.google.com/artifact-registry/docs)
@@ -365,6 +365,6 @@ kubectl get nodes
 
 ---
 
-**You now have a complete, production-ready GKE + Artifact Registry setup! 🎉**
+**You now have a complete, production-ready GKE + Artifact Registry setup! **
 
 *Cost-optimized, secure, and ready for your applications!*

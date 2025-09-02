@@ -1,6 +1,6 @@
-# 🎯 Kubectl Commands for GKE Staging Cluster
+#  Kubectl Commands for GKE Staging Cluster
 
-## 🔗 Connect to Staging Cluster
+##  Connect to Staging Cluster
 
 ```bash
 # Set project ID
@@ -15,7 +15,7 @@ gcloud container clusters get-credentials gke-staging \
 kubectl cluster-info
 ```
 
-## 📊 Node Status Commands
+##  Node Status Commands
 
 ### Basic Node Information
 ```bash
@@ -47,7 +47,7 @@ kubectl get nodes -w
 kubectl delete deployment test-nginx
 ```
 
-## 🔍 Cluster Monitoring
+##  Cluster Monitoring
 
 ### Cluster Status
 ```bash
@@ -76,7 +76,7 @@ kubectl describe nodes
 kubectl describe quota --all-namespaces
 ```
 
-## 🚀 Workload Management
+##  Workload Management
 
 ### Deploy Applications
 ```bash
@@ -110,7 +110,7 @@ kubectl describe pod POD_NAME
 kubectl exec -it POD_NAME -- /bin/bash
 ```
 
-## 🔧 Troubleshooting
+##  Troubleshooting
 
 ### Common Issues
 ```bash
@@ -142,7 +142,7 @@ gcloud container node-pools list \
   --project=$TF_VAR_project_id
 ```
 
-## 🧹 Cleanup Commands
+##  Cleanup Commands
 
 ### Remove Workloads
 ```bash
@@ -171,7 +171,7 @@ kubectl get pods --all-namespaces
 kubectl delete deployment DEPLOYMENT_NAME
 ```
 
-## 📊 Monitoring and Metrics
+##  Monitoring and Metrics
 
 ### Resource Monitoring
 ```bash
@@ -201,7 +201,7 @@ gcloud container clusters describe gke-staging \
   --format="table(name,status,currentNodeCount,autopilot.enabled)"
 ```
 
-## 🔐 Security Commands
+##  Security Commands
 
 ### RBAC and Permissions
 ```bash
@@ -264,7 +264,7 @@ kubectl logs POD_NAME
 kubectl describe nodes
 ```
 
-## 💡 Tips for Autopilot
+##  Tips for Autopilot
 
 1. **Nodes appear only when needed** - Don't worry if `kubectl get nodes` shows nothing
 2. **Node provisioning takes 1-3 minutes** - Be patient when deploying workloads
@@ -274,4 +274,4 @@ kubectl describe nodes
 
 ---
 
-**Remember**: GKE Autopilot manages nodes automatically, so you focus on applications! 🚀
+**Remember**: GKE Autopilot manages nodes automatically, so you focus on applications! 

@@ -1,8 +1,8 @@
-# 🚀 GKE Infrastructure Deployment Guide - Free Tier Optimized
+# GKE Infrastructure Deployment Guide - Free Tier Optimized
 
 This guide will help you deploy a cost-optimized GKE cluster using Terraform and Terragrunt on Google Cloud Platform's free tier.
 
-## 🎯 Free Tier Optimizations
+## Free Tier Optimizations
 
 This infrastructure is specifically optimized for GCP's Always Free tier:
 
@@ -13,14 +13,14 @@ This infrastructure is specifically optimized for GCP's Always Free tier:
 - **Reduced resource limits** and scaling constraints
 - **Free tier eligible regions**
 
-## 💰 Cost Estimates
+## Cost Estimates
 
 - **Staging (Autopilot)**: ~$0-10/month
 - **Production (Standard)**: ~$15-30/month
 
 > **Note**: These estimates assume minimal usage. Monitor your billing closely and adjust resources as needed.
 
-## 📋 Prerequisites
+## Prerequisites
 
 ### 1. Required Tools
 
@@ -53,7 +53,7 @@ brew install terragrunt  # macOS
    gcloud config set project YOUR-PROJECT-ID
    ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Step 1: Clone and Setup
 
@@ -68,11 +68,11 @@ chmod +x scripts/setup.sh
 ```
 
 The setup script will:
-- ✅ Check prerequisites
-- ✅ Enable required GCP APIs
-- ✅ Create GCS buckets for Terraform state
-- ✅ Optionally create a service account
-- ✅ Generate environment configuration
+-  Check prerequisites
+-  Enable required GCP APIs
+-  Create GCS buckets for Terraform state
+-  Optionally create a service account
+-  Generate environment configuration
 
 ### Step 2: Configure Environment
 
@@ -121,7 +121,7 @@ terragrunt plan
 terragrunt apply
 ```
 
-## 🛠️ Advanced Setup
+##  Advanced Setup
 
 ### Using Makefile Commands
 
@@ -166,7 +166,7 @@ export TF_LOG=INFO
 export TF_LOG_PATH=./terraform.log
 ```
 
-## 🎛️ Configuration Options
+## 🎛 Configuration Options
 
 ### Staging Environment (Autopilot)
 
@@ -206,7 +206,7 @@ inputs = {
 }
 ```
 
-## 🔐 Authentication & Access
+##  Authentication & Access
 
 ### Connect to Your Clusters
 
@@ -250,7 +250,7 @@ gcloud iam service-accounts keys create terraform-sa-key.json \
   --iam-account="terraform-gke@YOUR-PROJECT-ID.iam.gserviceaccount.com"
 ```
 
-## 📊 Monitoring Costs
+##  Monitoring Costs
 
 ### Set Up Billing Alerts
 
@@ -283,7 +283,7 @@ Keep in mind these GCP free tier limits:
 - **Cloud Storage**: 5GB per month
 - **Networking**: 1GB North America to all region destinations per month
 
-## 🔧 Customization
+##  Customization
 
 ### Switch Between Autopilot and Standard
 
@@ -328,7 +328,7 @@ inputs = {
 }
 ```
 
-## 🧹 Cleanup
+##  Cleanup
 
 ### Destroy Resources
 
@@ -359,7 +359,7 @@ gsutil rm -r gs://YOUR-PROJECT-ID-tfstate-staging
 gsutil rm -r gs://YOUR-PROJECT-ID-tfstate-production
 ```
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Common Issues
 
@@ -402,14 +402,14 @@ terragrunt refresh
 terragrunt validate
 ```
 
-## 📚 Additional Resources
+##  Additional Resources
 
 - [GCP Free Tier Documentation](https://cloud.google.com/free)
 - [GKE Autopilot Pricing](https://cloud.google.com/kubernetes-engine/pricing#autopilot_mode)
 - [Terraform GCP Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
 - [Terragrunt Documentation](https://terragrunt.gruntwork.io/)
 
-## 🎉 Next Steps
+##  Next Steps
 
 After deployment:
 
@@ -421,6 +421,6 @@ After deployment:
 
 ---
 
-**Happy deploying! 🚀**
+**Happy deploying! **
 
 *Remember to monitor your costs and adjust resources based on your actual usage patterns.*
