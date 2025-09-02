@@ -9,7 +9,7 @@ resource "google_secret_manager_secret" "gke_service_account_key" {
   }
 
   replication {
-    automatic = true
+    auto {}
   }
 }
 
@@ -31,7 +31,7 @@ resource "google_secret_manager_secret" "kubeconfig" {
   }
 
   replication {
-    automatic = true
+    auto {}
   }
 }
 

@@ -156,23 +156,23 @@ cost-estimate: check-env ## Estimate monthly costs for both environments
 
 status-staging: check-env ## Show status of staging GKE cluster
 	@echo "$(BLUE)📊 Staging cluster status:$(RESET)"
-	@gcloud container clusters describe gke-staging --region=us-central1-a --project=$(TF_VAR_project_id) --format="table(name,status,currentMasterVersion,currentNodeCount)" 2>/dev/null || echo "$(YELLOW)Cluster not found$(RESET)"
+	@gcloud container clusters describe gke-staging --region=us-central1 --project=$(TF_VAR_project_id) --format="table(name,status,currentMasterVersion,currentNodeCount)" 2>/dev/null || echo "$(YELLOW)Cluster not found$(RESET)"
 
 status-production: check-env ## Show status of production GKE cluster
 	@echo "$(BLUE)📊 Production cluster status:$(RESET)"
-	@gcloud container clusters describe gke-production --region=us-east1-b --project=$(TF_VAR_project_id) --format="table(name,status,currentMasterVersion,currentNodeCount)" 2>/dev/null || echo "$(YELLOW)Cluster not found$(RESET)"
+	@gcloud container clusters describe gke-production --region=us-east1 --project=$(TF_VAR_project_id) --format="table(name,status,currentMasterVersion,currentNodeCount)" 2>/dev/null || echo "$(YELLOW)Cluster not found$(RESET)"
 
 status: status-staging status-production ## Show status of all clusters
 
 kubeconfig-staging: check-env ## Get kubectl credentials for staging
 	@echo "$(BLUE)🔑 Getting staging kubeconfig...$(RESET)"
-	gcloud container clusters get-credentials gke-staging --region=us-central1-a --project=$(TF_VAR_project_id)
+	gcloud container clusters get-credentials gke-staging --region=us-central1 --project=$(TF_VAR_project_id)
 	@echo "$(GREEN)✅ Connected to staging cluster$(RESET)"
 	@kubectl get nodes 2>/dev/null || echo "$(YELLOW)⚠️  No nodes found (Autopilot manages nodes automatically)$(RESET)"
 
 kubeconfig-production: check-env ## Get kubectl credentials for production
 	@echo "$(BLUE)🔑 Getting production kubeconfig...$(RESET)"
-	gcloud container clusters get-credentials gke-production --region=us-east1-b --project=$(TF_VAR_project_id)
+	gcloud container clusters get-credentials gke-production --region=us-east1 --project=$(TF_VAR_project_id)
 	@echo "$(GREEN)✅ Connected to production cluster$(RESET)"
 	@kubectl get nodes
 
@@ -181,11 +181,11 @@ monitor: check-env ## Monitor cluster resource usage
 	@echo "$(CYAN)=============================$(RESET)"
 	@echo ""
 	@echo "$(YELLOW)Staging Cluster:$(RESET)"
-	@gcloud container clusters get-credentials gke-staging --region=us-central1-a --project=$(TF_VAR_project_id) --quiet 2>/dev/null || true
+	@gcloud container clusters get-credentials gke-staging --region=us-central1 --project=$(TF_VAR_project_id) --quiet 2>/dev/null || true
 	@kubectl top nodes 2>/dev/null || echo "$(YELLOW)Metrics not available (normal for Autopilot)$(RESET)"
 	@echo ""
 	@echo "$(YELLOW)Production Cluster:$(RESET)"
-	@gcloud container clusters get-credentials gke-production --region=us-east1-b --project=$(TF_VAR_project_id) --quiet 2>/dev/null || true
+	@gcloud container clusters get-credentials gke-production --region=us-east1 --project=$(TF_VAR_project_id) --quiet 2>/dev/null || true
 	@kubectl top nodes 2>/dev/null || echo "$(YELLOW)Metrics not available or cluster not running$(RESET)"
 
 billing-alerts: check-env ## Set up billing alerts (opens browser)

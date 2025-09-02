@@ -5,7 +5,7 @@
 remote_state {
   backend = "gcs"
   config = {
-    bucket  = "${get_env("TF_VAR_project_id", "")}-tfstate-${get_env("TF_VAR_environment", "dev")}"
+    bucket  = "${get_env("TF_VAR_project_id", "")}-tfstate-${basename(dirname(get_terragrunt_dir()))}"
     prefix  = "${path_relative_to_include()}/terraform.tfstate"
     project = get_env("TF_VAR_project_id", "")
     location = "US"

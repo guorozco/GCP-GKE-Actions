@@ -77,12 +77,17 @@ The setup script will:
 ### Step 2: Configure Environment
 
 ```bash
-# Source the environment variables
-source .env.local
+# Set your GCP project ID (replace with your actual project ID)
+export TF_VAR_project_id="your-actual-project-id"
 
 # Verify your project ID is set
 echo $TF_VAR_project_id
+
+# Optional: Source additional environment variables if you created .env.local
+# source .env.local
 ```
+
+**Important**: Replace `"your-actual-project-id"` with your actual GCP project ID.
 
 ### Step 3: Deploy Staging Environment
 

@@ -1,7 +1,7 @@
 # Staging Environment Configuration
 # Include the root terragrunt configuration
 include "root" {
-  path = find_in_parent_folders()
+  path = find_in_parent_folders("root.hcl")
 }
 
 # Terraform module source
@@ -13,7 +13,7 @@ terraform {
 inputs = {
   environment       = "staging"
   cluster_name      = "gke-staging"
-  region            = "us-central1-a"      # Free tier eligible region
+  region            = "us-central1"         # Free tier eligible region (Autopilot requires regional)
   
   # FREE TIER SETTINGS
   enable_autopilot   = true               # Autopilot is more cost-effective

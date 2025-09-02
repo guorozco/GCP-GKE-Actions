@@ -198,8 +198,8 @@ resource "google_container_node_pool" "gke_node_pool" {
 
   # Cost-optimized node configuration
   node_config {
-    preemptible  = var.enable_preemptible
-    spot         = var.enable_preemptible  # Use spot instances when available
+    # Use spot instances (newer and better than preemptible)
+    spot         = var.enable_preemptible
     machine_type = var.node_type
 
     # Service account
@@ -225,14 +225,14 @@ resource "google_container_node_pool" "gke_node_pool" {
     labels = {
       environment = var.environment
       managed-by  = "terraform"
-      preemptible = var.enable_preemptible ? "true" : "false"
+      spot        = var.enable_preemptible ? "true" : "false"
     }
 
-    # Taints for preemptible nodes
+    # Taints for spot nodes
     dynamic "taint" {
       for_each = var.enable_preemptible ? [1] : []
       content {
-        key    = "preemptible"
+        key    = "spot"
         value  = "true"
         effect = "NO_SCHEDULE"
       }

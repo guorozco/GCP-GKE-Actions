@@ -91,7 +91,7 @@ variable "disk_size_gb" {
 }
 
 variable "enable_preemptible" {
-  description = "Use preemptible nodes for cost savings"
+  description = "Use spot nodes for cost savings (spot instances are newer than preemptible)"
   type        = bool
   default     = true
 }
