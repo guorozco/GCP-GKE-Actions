@@ -139,14 +139,43 @@ jobs:
             --wait \
             --timeout=10m
             
+      - name: Clean up old deployments
+        run: |
+          # Remove old deployments that might conflict
+          kubectl delete deployment hello-world-flask --ignore-not-found=true
+          kubectl delete service hello-world-flask-service --ignore-not-found=true
+          kubectl delete hpa hello-world-flask-hpa --ignore-not-found=true
+          
       - name: Run health checks
         run: |
-          kubectl wait --for=condition=ready pod -l app=hello-world-flask --timeout=300s
-          kubectl port-forward service/hello-app-staging-service 8080:80 &
-          PF_PID=$!
-          sleep 5
-          curl -f http://localhost:8080/api/health
-          kill $PF_PID
+          # Wait for Helm deployment pods to be ready
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=hello-app-staging --timeout=300s
+          
+          # Get service name and test connectivity
+          STAGING_SERVICE="hello-app-staging-hello-app"
+          
+          # Try to get external IP first, fallback to port-forward
+          EXTERNAL_IP=$(kubectl get service $STAGING_SERVICE -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
+          
+          if [[ -n "$EXTERNAL_IP" && "$EXTERNAL_IP" != "null" && "$EXTERNAL_IP" != "" ]]; then
+            echo "Testing via external IP: $EXTERNAL_IP"
+            for i in {1..30}; do
+              if curl -f "http://$EXTERNAL_IP/api/health"; then
+                echo "Staging health check passed via external IP!"
+                break
+              fi
+              echo "Waiting for external service... ($i/30)"
+              sleep 10
+            done
+          else
+            echo "External IP not available, using port-forward"
+            kubectl port-forward service/$STAGING_SERVICE 8080:80 &
+            PF_PID=$!
+            sleep 5
+            curl -f http://localhost:8080/api/health
+            kill $PF_PID
+            echo "Staging health check passed via port-forward!"
+          fi
 
   # Stage 3: Manual Approval for Production
   approve:
@@ -218,26 +247,40 @@ jobs:
             --wait \
             --timeout=15m
             
+      - name: Clean up old deployments
+        run: |
+          # Remove old deployments that might conflict
+          kubectl delete deployment hello-world-flask --ignore-not-found=true
+          kubectl delete service hello-world-flask-service --ignore-not-found=true
+          kubectl delete hpa hello-world-flask-hpa --ignore-not-found=true
+          
       - name: Run production health checks
         run: |
-          kubectl wait --for=condition=ready pod -l app=hello-world-flask --timeout=600s
+          # Wait for Helm deployment pods to be ready
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=hello-app-production --timeout=600s
+          
+          # Get service name and test connectivity
+          PRODUCTION_SERVICE="hello-app-production-hello-app"
           
           # Try to get external IP, fallback to port-forward
-          EXTERNAL_IP=$(kubectl get service hello-app-production-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
+          EXTERNAL_IP=$(kubectl get service $PRODUCTION_SERVICE -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || echo "")
           
-          if [[ -n "$EXTERNAL_IP" && "$EXTERNAL_IP" != "null" ]]; then
+          if [[ -n "$EXTERNAL_IP" && "$EXTERNAL_IP" != "null" && "$EXTERNAL_IP" != "" ]]; then
+            echo "Testing via external IP: $EXTERNAL_IP"
             for i in {1..30}; do
               if curl -f "http://$EXTERNAL_IP/api/health"; then
-                echo "Production health check passed!"
+                echo "Production health check passed via external IP!"
                 break
               fi
-              echo "Waiting for service... ($i/30)"
+              echo "Waiting for external service... ($i/30)"
               sleep 10
             done
           else
-            kubectl port-forward service/hello-app-production-service 8080:80 &
+            echo "External IP not available, using port-forward"
+            kubectl port-forward service/$PRODUCTION_SERVICE 8080:80 &
             PF_PID=$!
             sleep 5
             curl -f http://localhost:8080/api/health
             kill $PF_PID
+            echo "Production health check passed via port-forward!"
           fi
