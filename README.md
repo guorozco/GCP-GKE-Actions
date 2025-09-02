@@ -1139,7 +1139,7 @@ Before setting up the CI/CD pipeline, ensure you have:
 
 ```bash
 # Set variables
-export PROJECT_ID="test-demo-123456-guillermo"
+export PROJECT_ID="ID_GOOOGLEEE"
 export SA_NAME="github-actions-sa"
 export SA_EMAIL="$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com"
 
